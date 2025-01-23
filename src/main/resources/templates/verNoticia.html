@@ -53,7 +53,11 @@
             <p th:text="${comentario.autor}"></p>
             <p th:text="${comentario.texto}"></p>
             <h2>Validar: </h2>
-            <button class="button" onclick="toggleOpacidad(this)" >Validado</button>
+            <!-- Botón para aprobar o rechazar el comentario -->
+            <form action="/cambiarEstado" method="post">
+                <input type="hidden" th:value="${comentario.id}" name="id"/>
+                <button type="submit" class="btn btn-primary mb-3" th:text="${comentario.validado ? 'Rechazar' : 'Aprobar'}"></button>
+            </form>
         </div>
 
     </div>
