@@ -12,4 +12,5 @@ public interface RepositorioComentarios extends JpaRepository<Comentario,Long> {
     public List<Comentario> findByNoticia(Noticia noticia);
     public List<Comentario> findTop5ByOrderByFechaDesc();
 
+    long countByNoticia(Noticia noticia);
 }

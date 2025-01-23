@@ -18,4 +18,8 @@ public class Noticia {
 
     private String imagen;
     private Date fecha;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id") // Nombre de la columna en la tabla Noticia
+    private Categoria categoria;
 }

@@ -51,7 +51,7 @@
             <hr>
             <p th:text="${comentario.fecha}"></p>
             <p th:text="${comentario.autor}"></p>
-            <p th:text="${comentario.texto}"></p>
+            <p th:if="${comentario.validado}" th:text="${comentario.texto}"></p>
             <h2>Validar: </h2>
             <!-- Botón para aprobar o rechazar el comentario -->
             <form action="/cambiarEstado" method="post">

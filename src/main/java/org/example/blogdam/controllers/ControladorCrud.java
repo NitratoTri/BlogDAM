@@ -79,9 +79,22 @@ public class ControladorCrud {
         return "redirect:/crud/noticias";
     }
 
-//Crea un CRUD para los comentarios en el que se puedan aprobar y rechazar. Haz cambios en el controlador
-// para que solo se muestren los comentarios aprobados al mostrar una noticia. Será necesario que añadas un método en el Repositorio.
-// Crea un metodo post mappinng que cambie el booleano de un comentario de una noticia en la pagina /verNoticia/id
-
+    @PostMapping("/cambiarEstado")
+    public String cambiarEstado(@RequestParam Long id, @ModelAttribute Comentario comentario, Model model) {
+        try {
+            // Buscar el comentario por id
+            Optional<Comentario> comentarioOpt = repoComentarios.findById(id);
+            if (comentarioOpt.isPresent()) {
+                Comentario comentarioEncontrado = comentarioOpt.get();
+                //Cambiamos el estado del comentario segun si es true o false, de true a false y viciversa
+                comentarioEncontrado.setValidado(!comentarioEncontrado.isValidado());
+                repoComentarios.save(comentarioEncontrado);
+                return "redirect:/verNoticia/" + comentarioEncontrado.getNoticia().getId();
+            }
+            return "redirect:/";
+        } catch (Exception e) {
+            return "redirect:/";
+        }
+    }
 }
 

@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -27,10 +29,22 @@ public class ControladorPrincipal {
     public String index(Model model) {
         List<Noticia> listaNoticias = repositorioNoticias.findAll();
         List<Comentario> listaComentarios = repositorioComentarios.findTop5ByOrderByFechaDesc();
+
+        // Crear mapa para contar los comentarios por noticia
+        Map<Long, Long> contadorComentarios = new HashMap<>();
+        for (Noticia noticia : listaNoticias) {
+            long contador = repositorioComentarios.countByNoticia(noticia);
+            contadorComentarios.put(noticia.getId(), contador);
+        }
+
+        // Añadir datos al modelo
         model.addAttribute("comentarios", listaComentarios);
         model.addAttribute("lista", listaNoticias);
+        model.addAttribute("contadorComentarios", contadorComentarios); // <--- Aquí lo añadimos
+
         return "index";
     }
+
 
     @GetMapping("/verNoticia/{id}")
     public String verNoticia(Model model, @PathVariable Long id) {
@@ -51,23 +65,7 @@ public class ControladorPrincipal {
         return "redirect:/verNoticia/" + comentario.getNoticia().getId();
     }
 
-    @PostMapping("/cambiarEstado")
-    public String cambiarEstado(@RequestParam Long id, @ModelAttribute Comentario comentario, Model model) {
-        try {
-            // Buscar el comentario por id
-            Optional<Comentario> comentarioOpt = repositorioComentarios.findById(id);
-            if (comentarioOpt.isPresent()) {
-                Comentario comentarioEncontrado = comentarioOpt.get();
-                //Cambiamos el estado del comentario segun si es true o false, de true a false y viciversa
-                comentarioEncontrado.setValidado(!comentarioEncontrado.isValidado());
-                repositorioComentarios.save(comentarioEncontrado);
-                return "redirect:/verNoticia/" + comentarioEncontrado.getNoticia().getId();
-            }
-            return "redirect:/";
-        } catch (Exception e) {
-            return "redirect:/";
-        }
-    }
+
 
 
 

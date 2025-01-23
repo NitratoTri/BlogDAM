@@ -50,7 +50,7 @@
                 <hr>
                 <p th:text="${comentario.fecha}"></p>
                 <p th:text="${comentario.autor}"></p>
-                <p th:text="${comentario.texto}"></p>
+                <p th:if="${comentario.validado}"th:text="${comentario.texto}"></p>
                 <a th:href="${'/verNoticia/' + comentario.noticia.id}">Ver Noticia</a>
             </div>
         </div>
@@ -65,6 +65,7 @@
                 <img th:src="${'/file/download/'+noticia.imagen}">
                 <h6 th:text="${#dates.format(noticia.fecha, 'dd-MM-yyyy')}"><p th:text="${noticia.fecha}"></p></h6>
                 <p th:text="${#strings.abbreviate(noticia.contenido,50)}"></p>
+                <p>Comentarios: <span th:text="${contadorComentarios[noticia.id]}"></span></p>
                 <hr>
             </div>
         </div>

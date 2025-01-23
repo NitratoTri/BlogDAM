@@ -17,7 +17,7 @@ public class Comentario {
     private String texto;
     private Date fecha;
     //Propiedad boolean de un comentario que indica si ha sido validado por el administrador
-    private boolean validado;
+    private boolean validado= true;
     @ManyToOne
     private Noticia noticia;
 }
