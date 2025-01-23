@@ -1,0 +1,21 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,700;1,300;1,400;1,700&display=swap');
+</style>
+*{
+text-font: Roboto;
+}
+.encabezado-lista{
+text-align: center;
+text-color: white;
+background-color: grey;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}

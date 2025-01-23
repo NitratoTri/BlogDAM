@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Ver Noticia</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/css/verNoticia.css">
+    <script src="/js/verNoticia.js"></script>
+</head>
+<body>
+<header>
+  <div class="index-navbar-container navbar-center">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark" aria-label="Fourth navbar example">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">📚Blog Pablo📚</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample04">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/crud/noticias">Noticias</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/crud/noticias/insertar">Formulario Noticias</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    </navbar>
+  </div>
+  <h1 th:text="${'Viendo noticia: ' + noticia.titulo}" class="encabezado-verNoticia"></h1>
+</header>
+
+<div class="container">
+  <h1 th:text="${noticia.titulo}"></h1>
+  <h6 th:text="${noticia.fecha}"></h6>
+  <div class="text-center"><img th:src="${'/file/download/'+noticia.imagen}" style="width: 650px"></div>
+    <!-- Cambio en p para que sea como pide el ejercicio: th:text="${noticia.contenido}"></p> -->
+  <p th:utext="${noticia.contenido}"></p>
+</div>
+
+    <h2>Comentarios</h2>
+    <div class="row" th:each="comentario: ${comentarios}">
+        <div class="col">
+            <hr>
+            <p th:text="${comentario.fecha}"></p>
+            <p th:text="${comentario.autor}"></p>
+            <p th:text="${comentario.texto}"></p>
+            <h2>Validar: </h2>
+            <button class="button" onclick="toggleOpacidad(this)" >Validado</button>
+        </div>
+
+    </div>
+<br>
+<form action="/comentar" th:object="${comentario}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" th:field="*{noticia}">
+    <input type="hidden" th:field="*{fecha}">
+    <div class="mb-3">
+        <label for="autor" class="form-label">Autor</label>
+        <input type="text" class="form-control" th:field="*{autor}" id="autor" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="contenido" class="form-label">Comentario</label>
+        <textarea class="form-control" th:field="*{texto}" id="contenido" rows="4" required></textarea>
+    </div>
+    <input value="Enviar Comentario" type="submit" class="btn btn-primary mb-3">
+</form>
+
+<div class="container">
+    <footer class="py-3 my-4 footer-custom">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="/" class="nav-link px-2 text-body-secondary">Inicio</a></li>
+            <li class="nav-item"><a href="/crud/noticias" class="nav-link px-2 text-body-secondary">Noticias</a></li>
+            <li class="nav-item"><a href="/crud/noticias/insertar" class="nav-link px-2 text-body-secondary">Formulario Noticias</a></li>
+        </ul>
+        <p class="text-center text-body-secondary">Pagina de Pablo - Derechos reservados</p>
+    </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,700;1,300;1,400;1,700&display=swap');
+</style>
+*{
+text-font: Roboto;
+}
+
+.encabezado-verNoticia{
+text-align: center;
+text-decoration: bold;
+font-size: 200%;
+color: white;
+background-color: grey;
+padding: 20px;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+/*Css del boton de validar*/
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #6495ED;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.button.clicked {
+  opacity: 0.5;
+}
+
+.image-centered{
+float: center;
+}
+.image-centered img{
+width: 500px;}
+
+p{
+text-align: center;}
