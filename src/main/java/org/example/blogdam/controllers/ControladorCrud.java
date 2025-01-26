@@ -1,7 +1,10 @@
 package org.example.blogdam.controllers;
 
+import org.example.blogdam.entities.Categoria;
 import org.example.blogdam.entities.Comentario;
 import org.example.blogdam.entities.Noticia;
+import org.example.blogdam.entities.TipoCategoria;
+import org.example.blogdam.repositories.RepositorioCategorias;
 import org.example.blogdam.repositories.RepositorioComentarios;
 import org.example.blogdam.repositories.RepositorioNoticias;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.example.blogdam.servicios.FileProcessingService;
 import javax.swing.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +29,8 @@ public class ControladorCrud {
     private FileProcessingService service;
     @Autowired
     private RepositorioComentarios repoComentarios;
-
+    @Autowired
+    private RepositorioCategorias repoCategorias;
     @GetMapping("/crud/noticias")
     public String lista(Model model) {
         List<Noticia> listaNoticias = repo.findAll();
@@ -37,28 +42,46 @@ public class ControladorCrud {
     public String muestraFormulario(Model model) {
         Noticia noticia = new Noticia();
         noticia.setFecha(Date.valueOf(LocalDate.now()));
+
+        // Envía las categorías desde la base de datos
+        List<Categoria> categorias = repoCategorias.findAll();
+
+        // Envía los valores del enum TipoCategoria
+        model.addAttribute("tiposCategorias", TipoCategoria.values());
+
+        model.addAttribute("categorias", categorias);
         model.addAttribute("title", "Insertar Noticia");
         model.addAttribute("noticia", noticia);
-
         return "formularioNoticias";
     }
 
     @PostMapping("/crud/noticias/insertar")
     public String insertar(@ModelAttribute Noticia noticia, @RequestParam("fichero") MultipartFile fichero) {
-        String redireccion = noticia.getId() == 0 ? "redirect:/crud/noticias/insertar" : "redirect:/crud/noticias";
-        repo.save(noticia);
+        // Recuperar la categoría seleccionada
+        Optional<Categoria> categoriaOpt = repoCategorias.findById(noticia.getCategoria().getId());
+        if (categoriaOpt.isPresent()) {
+            noticia.setCategoria(categoriaOpt.get());
+        } else {
+            // Manejar el caso en que la categoría no existe
+            return "redirect:/crud/noticias/insertar?error=CategoriaInvalida";
+        }
 
+        // Guardar la noticia
+        noticia = repo.save(noticia);
+
+        // Manejo de imágenes
         if (!fichero.isEmpty()) {
             String nombreOriginal = fichero.getOriginalFilename();
             String extension = nombreOriginal.substring(nombreOriginal.lastIndexOf(".") + 1);
             String img = "n-" + noticia.getId() + "." + extension;
-            String resultadoSubida = service.uploadFile(fichero, img);
+            service.uploadFile(fichero, img);
             noticia.setImagen(img);
             repo.save(noticia);
         }
 
-        return redireccion;
+        return "redirect:/";
     }
+
 
 
     @GetMapping("/crud/noticias/modificar/{id}")

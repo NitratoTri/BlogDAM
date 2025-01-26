@@ -65,9 +65,14 @@
         </div>
         <!-- Categoria -->
         <div class="mb-3">
-            <label for="categoria" class="form-label">Categoria</label>
-            <input type="text" class="form-control" th:field="*{fecha}" id="categoria" placeholder="Intro">
+            <label for="categoria" class="form-label">Categoría</label>
+            <select class="form-control" id="categoria" name="categoria.id">
+                <option th:each="categoria : ${categorias}"
+                        th:value="${categoria.id}"
+                        th:text="${categoria.tipo}"></option>
+            </select>
         </div>
+
         <!-- Botón Enviar -->
         <button type="submit" class="btn btn-primary">Enviar</button>
     </form>

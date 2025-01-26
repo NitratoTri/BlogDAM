@@ -65,8 +65,4 @@ public class ControladorPrincipal {
         return "redirect:/verNoticia/" + comentario.getNoticia().getId();
     }
 
-
-
-
-
 }
